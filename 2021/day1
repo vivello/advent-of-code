@@ -1,0 +1,13 @@
+# count the number of times a depth measurement increases from the previous measurement
+
+def increasing_count(file_name):
+    with open(file_name,"r") as f:
+        count = 0
+        prev_line = f.readline()
+        line = f.readline()
+        while line:
+            if int(line) > int(prev_line):
+                count += 1
+            prev_line = line
+            line = f.readline()
+    return count

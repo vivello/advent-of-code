@@ -2,6 +2,12 @@
 # Find 2 most active monkeys after 20 rounds and multiply number of inspections each does
 # 56120
 
+# Part 2
+# Find 2 most active monkeys after 1000 rounds (manage worry numbers so they aren't massive)
+# 24389045529
+
+from math import prod
+
 class Monkey:
     def __init__(self, items, operation, test, mt, mf):
         self.items = items
@@ -28,11 +34,12 @@ def new_worry(operator,op_value,old_worry):
     ops = {'+': lambda x,y: x + y,
            '*': lambda x,y: x * y}
     if op_value == 'old':
-        return ops[operator](old_worry,old_worry) // 3
+        return ops[operator](old_worry,old_worry)
     else:
-        return ops[operator](old_worry,op_value) // 3
+        return ops[operator](old_worry,op_value)
 
 def throw(m_dict, rounds):
+    mod = prod([m.test for i,m in m_dict.items()])
     for i in range(rounds):
         for j,m in m_dict.items():
             how_many = len(m.items)
@@ -41,11 +48,10 @@ def throw(m_dict, rounds):
                 to_throw = m.items.pop(0)
                 new = new_worry(m.operation[0],m.operation[1],to_throw)
                 if (new % m.test) == 0:
-                    m_dict[m.m_true].items.append(new)
+                    m_dict[m.m_true].items.append(new % mod)
                 else:
-                    m_dict[m.m_false].items.append(new)
+                    m_dict[m.m_false].items.append(new % mod)
     return sorted([(v.inspected,n) for n,v in m_dict.items()])[-2:]
-
 
 def main(file_name):
     monkeys = {}
@@ -54,5 +60,5 @@ def main(file_name):
         for i in range(8):
             m_start = i * 7
             monkeys[i] = make_monkey(inp[m_start: m_start + 7])
-        return throw(monkeys,20)
+        return throw(monkeys,10000)
         

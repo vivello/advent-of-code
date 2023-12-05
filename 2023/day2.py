@@ -72,3 +72,21 @@ def main(file_name,check_dict):
             line = f.readline()
 
     return id_sum
+
+# Part 2 = 72422
+
+from math import prod
+
+def game_powers(file_name):
+    power_sum = 0
+
+    with open(file_name,"r") as f:
+        line = f.readline()
+
+        while line:
+            power_sum += prod(transform(line.split(": ")[1]).values())
+            line = f.readline()
+
+    return power_sum
+
+
